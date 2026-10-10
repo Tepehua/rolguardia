@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rol de guardia</title>
+<style>
+:root{--bg:#eef1f4;--card:#fff;--ink:#14202e;--mut:#5d6b7a;--blue:#17324d;--amb:#e8a317;--line:#cfd6de;--ok:#1f7a4d;--bad:#b3261e;--soft:#e4e9ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1720;--card:#18232f;--ink:#e6ecf2;--mut:#93a1b0;--blue:#2c5a85;--line:#2b3947;--ok:#4cc38a;--bad:#ff8a80;--soft:#223140}}
+:root[data-theme="dark"]{--bg:#0f1720;--card:#18232f;--ink:#e6ecf2;--mut:#93a1b0;--blue:#2c5a85;--line:#2b3947;--ok:#4cc38a;--bad:#ff8a80;--soft:#223140}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--blue);color:#fff;padding:14px 16px}
+header h1{margin:0;font-size:20px;letter-spacing:.2px}
+header p{margin:2px 0 0;opacity:.8;font-size:13px;text-transform:capitalize}
+nav{display:flex;gap:4px;padding:8px 12px 0;background:var(--blue);overflow-x:auto}
+nav button{border:0;background:transparent;color:#fff;opacity:.7;padding:9px 14px;font:inherit;border-radius:8px 8px 0 0;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--bg);color:var(--ink);opacity:1;font-weight:600}
+main{max-width:1200px;margin:0 auto;padding:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{border:1px solid var(--line);background:var(--card);padding:8px 12px;border-radius:8px;cursor:pointer}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,nav button:focus-visible{outline:2px solid var(--amb);outline-offset:1px}
+.btn.main{background:var(--amb);border-color:var(--amb);color:#1b1400;font-weight:700}
+.btn.sm{padding:4px 9px;font-size:13px}
+.btn.bad{color:var(--bad)}
+input,select,textarea{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--card);padding:8px 12px;cursor:pointer}
+.seg button.on{background:var(--blue);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:24px;line-height:1.1}
+.stat span{color:var(--mut);font-size:13px}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:12px;align-items:start}
+@media(max-width:820px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.panel h2{margin:0 0 8px;font-size:16px}
+.list{max-height:520px;overflow:auto;margin:0 -4px}
+.row{display:flex;gap:8px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--soft);cursor:pointer}
+.row small,.chip small{color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.sec h3{margin:0;font-size:15px}
+.sec .ar{color:var(--mut);font-size:13px}
+.meter{height:6px;background:var(--soft);border-radius:4px;margin:8px 0;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--amb)}
+.sec.full .meter i{background:var(--ok)}
+.sec.over .meter i{background:var(--bad)}
+.cnt{float:right;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:5px;min-height:30px;margin-bottom:8px}
+.chip{background:var(--soft);border-radius:6px;padding:2px 4px 2px 8px;font-size:13px;display:inline-flex;gap:5px;align-items:center}
+.chip button{border:0;background:transparent;cursor:pointer;color:var(--mut);font-size:16px;line-height:1;padding:0 3px}
+.empty{color:var(--mut);font-size:13px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--soft)}
+th{color:var(--mut);font-weight:600}
+.scroll{overflow-x:auto}
+td input,td select{width:100%;min-width:95px;padding:5px 7px}
+.warn{background:var(--soft);border:2px solid var(--amb);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.chip.rep{outline:2px solid var(--amb)}
+.lleno{background:var(--soft);border-left:3px solid var(--amb);padding:6px 8px;border-radius:6px;font-size:13px;margin-bottom:8px}
+.chip.ex{background:var(--bad);color:#fff}.chip.ex small,.chip.ex button{color:#fff}
+.chip select{color:var(--ink);border-radius:6px}
+textarea{width:100%;min-height:90px}
+#toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+@media print{header,nav,.bar,.stats,aside,#toast,.btn{display:none!important}}
+</style></head>
+<body>
+<header><h1>Rol de guardia · Control de sectores</h1><p id="fecha"></p></header>
+<nav id="nav"></nav>
+<main id="app"></main>
+<div id="toast" role="status"></div>
+<script>
+const K='rol-guardia-v2',T=['Vespertino','Nocturno'];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function demo(){
+ const N=['Carlos','Luis','Miguel','José','Jorge','Pedro','Juan','Ana','María','Laura','Sofía','Daniela','Diego','Andrés','Rafael','Héctor','Fernando','Alma','Karla','Rosa','Iván','Omar','Gabriela','Esteban'];
+ const A=['García','Hernández','López','Martínez','Pérez','Ramírez','Torres','Flores','Rivera','Gómez','Díaz','Cruz','Morales','Reyes','Ortiz','Castillo','Vargas','Mendoza','Ruiz','Jiménez'];
+ const off=[];for(let i=0;i<120;i++)off.push({id:i+1,mat:'P-'+String(1001+i),nombre:N[i%24]+' '+A[(i*7+3)%20]+' '+A[(i*3+11)%20],rango:i%15===0?'Suboficial':'Policía',tel:'55'+String(20000000+(i*7919341)%79999999),turno:T[i%2]});
+ const L=[['Centro','Plaza Principal',6],['Centro','Mercado Municipal',6],['Centro','Palacio Municipal',5],['Norte','Colonia Industrial',5],['Norte','Parque Lineal',4],['Sur','Terminal de Autobuses',6],['Sur','Hospital General',5],['Oriente','Escuelas Zona Oriente',5],['Oriente','Av. Reforma',4],['Poniente','Unidad Deportiva',4],['Poniente','Acceso Poniente',5],['Poniente','Patrulla móvil',5]];
+ return{off,sec:L.map((s,i)=>({id:i+1,area:s[0],nombre:s[1],cupo:s[2]})),asg:{Vespertino:{},Nocturno:{}},nid:500};
+}
+function load(){try{const s=localStorage.getItem(K);if(s)return JSON.parse(s)}catch(e){}return demo()}
+function save(){try{S.hist=S.hist||{};T.forEach(t=>{const h=S.hist[t]=S.hist[t]||{};h[hoy()]=Object.assign({},S.asg[t]||{});Object.keys(h).sort().slice(0,-14).forEach(d=>delete h[d])});localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+const ADM=location.hash==='#admin';
+let S=load(),tab='tablero',turno='Vespertino',sel=new Set(),edO=null,edS=null,q='';
+document.getElementById('fecha').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2200)}
+const $=id=>document.getElementById(id);
+const secName=id=>{const s=S.sec.find(x=>x.id===id);return s?s.nombre:'—'};
+
+function tablero(){
+ const A=S.asg[turno]||(S.asg[turno]={});
+ const ids=new Set(S.sec.map(s=>s.id));
+ const list=S.off.filter(o=>o.turno===turno&&!falto(o));
+ const un=list.filter(o=>!ids.has(A[o.id]));
+ const by={};S.sec.forEach(s=>by[s.id]=[]);
+ list.forEach(o=>{if(by[A[o.id]])by[A[o.id]].push(o)});
+ const cupo=S.sec.reduce((a,s)=>a+s.cupo,0);const rp=rep();const all=S.off.filter(o=>o.turno===turno),nv=all.filter(o=>vino(o)===1).length,nf=all.filter(o=>vino(o)===0).length;
+ sel=new Set([...sel].filter(id=>un.some(o=>o.id===id)||all.some(o=>o.id===id&&vino(o)===0)));
+ return `${rp.length?`<div class="warn" role="alert"><b>⚠ ${rp.length} ${rp.length>1?'policías repiten':'policía repite'} sector</b> igual que en su guardia anterior: ${rp.slice(0,6).map(o=>esc(o.nombre.split(' ').slice(0,2).join(' '))+' ('+esc(secName(A[o.id]))+')').join(', ')}${rp.length>6?' y '+(rp.length-6)+' más':''}. Usa "Armar o rotar rol" o cámbialos de sector.</div>`:''}${S.sec.length&&un.length&&S.sec.every(s=>by[s.id].length>=s.cupo)?`<div class="warn" role="status"><b>Todos los sectores llegaron a su límite.</b> Los ${un.length} policías sin asignar quedan en reserva.</div>`:''}<div class="bar">
+  <div class="seg">${T.map(t=>`<button class="${t===turno?'on':''}" data-act="turno" data-v="${t}">${t}</button>`).join('')}</div>
+  <button class="btn main" data-act="auto">Armar o rotar rol</button>
+  <button class="btn" data-act="clear">Limpiar turno</button>${ADM?'<button class="btn" data-act="ayer">Probar: guardar como guardia de ayer</button>':''}
+  <label class="row" style="border:0;padding:0 4px"><input type="checkbox" data-act="autoday" ${S.auto?'checked':''}> Rotar solo cada día</label>
+  </div>
+ <div class="stats">
+  <div class="stat"><b>${list.length}</b><span>policías disponibles</span></div>
+  <div class="stat"><b>${list.length-un.length}</b><span>con sector asignado</span></div>
+  <div class="stat"><b>${un.length}</b><span>sin asignar</span></div>
+  <div class="stat"><b>${cupo}</b><span>lugares requeridos</span></div></div>
+ <details id="as" class="panel" ${ASO?'open':''} style="margin-bottom:12px"><summary style="cursor:pointer"><b>Asistencia</b> · vinieron ${nv} · no vinieron ${nf} · sin marcar ${all.length-nv-nf}</summary><p class="empty" style="margin:8px 0 0">Al marcar la asistencia el rol se arma o se ajusta solo: a los que no vinieron los reemplazan los que estén en reserva.</p><div class="bar" style="margin-top:8px"><button class="btn sm" data-act="todosvino">Todos vinieron</button><button class="btn sm" data-act="limpAs">Borrar marcas</button></div><div class="list" id="asl">${all.map(o=>{const v=vino(o);return `<div class="row" style="cursor:default"><span style="flex:1"><b>${esc(o.nombre)}</b> <small>${esc(o.mat)}</small></span><button class="btn sm" style="${v===1?'background:var(--ok);color:#fff;border-color:var(--ok)':''}" data-act="vino" data-id="${o.id}">Vino</button><button class="btn sm" style="${v===0?'background:var(--bad);color:#fff;border-color:var(--bad)':''}" data-act="falta" data-id="${o.id}">No vino</button></div>`}).join('')}</div></details><div class="layout"><aside class="panel"><h2>Sin asignar (${un.length}${nf?' + '+nf+' no vinieron':''})</h2>
+  <div class="bar"><button class="btn sm" data-act="selall">Seleccionar todos</button><button class="btn sm" data-act="selnone">Ninguno</button></div>
+  <div class="list">${un.map(o=>`<label class="row"><input type="checkbox" data-act="sel" data-id="${o.id}" ${sel.has(o.id)?'checked':''}><span><b>${esc(o.nombre)}</b> <small>${esc(o.mat)}</small></span></label>`).join('')||(nf?'':'<p class="empty">Todo el personal del turno tiene sector.</p>')}${all.filter(o=>vino(o)===0).map(o=>`<label class="row" style="opacity:.9"><input type="checkbox" data-act="sel" data-id="${o.id}" ${sel.has(o.id)?'checked':''}><span style="flex:1"><b>${esc(o.nombre)}</b> <small>${esc(o.mat)}</small> <span style="color:var(--bad);font-weight:600">No vino</span></span><button class="btn sm" data-act="vino" data-id="${o.id}">Sí vino</button></label>`).join('')}</div></aside>
+ <section class="grid">${S.sec.map(s=>{const n=by[s.id].length,c=n>s.cupo?'over':n===s.cupo?'full':'';const sg=n>=s.cupo?sugerir(s.id):null;const ex=exs(s,by[s.id]);return `<div class="panel sec ${c}"><span class="cnt">${n}/${s.cupo}</span><h3>${esc(s.nombre)}</h3><div class="ar">${esc(s.area)}</div>
+  <div class="meter"><i style="width:${Math.min(100,s.cupo?n/s.cupo*100:0)}%"></i></div>
+  <div class="chips">${by[s.id].map(o=>`<span class="chip${rp.includes(o)?' rep':''}${ex.includes(o)?' ex':''}"${ex.includes(o)?' title="Pasa el límite del sector"':''}>${ex.includes(o)?'<b>De más:</b> ':''}${rp.includes(o)?'⚠ ':''}${esc(o.nombre.split(' ').slice(0,2).join(' '))} <small>${esc(o.mat)}</small><button data-act="out" data-id="${o.id}" aria-label="Quitar a ${esc(o.nombre)}">×</button>${ex.includes(o)?`<select data-mv="${o.id}" aria-label="Mover a otro sector" style="font-size:12px;padding:2px 4px;max-width:150px"><option value="">Mover a…</option>${S.sec.filter(x=>x.id!==s.id).slice().sort((p,r)=>(by[p.id].length>=p.cupo)-(by[r.id].length>=r.cupo)).map(x=>`<option value="${x.id}">${esc(x.nombre)} ${by[x.id].length}/${x.cupo}</option>`).join('')}</select>`:''}</span>`).join('')||'<span class="empty">Sin personal</span>'}</div>
+  ${n>=s.cupo?`<div class="lleno"><b>${n>s.cupo?'⚠ Pasa del límite por '+(n-s.cupo)+'.':'Límite alcanzado.'}</b>${sg?' Mejor asigna en <b>'+esc(sg.nombre)+'</b>.':' Todos los sectores están llenos.'}</div>`:''}<button class="btn sm" data-act="put" data-id="${s.id}">Asignar selección (${sel.size})</button></div>`}).join('')}</section></div><div class="panel" style="margin-top:12px"><h2>Mensaje para el grupo</h2><textarea id="mt" style="min-height:200px">${esc(msg())}</textarea><p class="bar"><button class="btn main" data-act="copy">Copiar mensaje</button></p><p class="empty">Toca "Copiar mensaje", entra a tu grupo de WhatsApp y pégalo.</p></div>`;
+}
+
+function filaO(o){const A=S.asg[o.turno]||{};return `<tr><td><input data-f="mat" data-id="${o.id}" value="${esc(o.mat)}" aria-label="Matrícula"></td><td><input data-f="nombre" data-id="${o.id}" value="${esc(o.nombre)}" aria-label="Nombre" style="min-width:200px"></td><td><input data-f="tel" data-id="${o.id}" value="${esc(o.tel||'')}" inputmode="tel" placeholder="Teléfono" aria-label="Teléfono"></td><td><select data-f="turno" data-id="${o.id}" aria-label="Turno">${T.map(t=>`<option ${t===o.turno?'selected':''}>${t}</option>`).join('')}</select></td><td>${esc(secName(A[o.id]))}</td><td><button class="btn sm bad" data-act="delO" data-id="${o.id}">Borrar</button></td></tr>`}
+function rowsO(){const k=q.toLowerCase();return S.off.filter(o=>!k||(o.nombre+o.mat).toLowerCase().includes(k)).map(filaO).join('')||'<tr><td colspan="6" class="empty">Sin resultados.</td></tr>'}
+function personal(){const e=S.off.find(o=>o.id===edO)||{mat:'',nombre:'',rango:'Policía',turno:turno};
+ return `<div class="panel" ${ADM?'':'hidden'}><h2>${edO?'Editar policía':'Agregar policía'}</h2>
+ <div class="form"><input id="fm" placeholder="Matrícula" value="${esc(e.mat)}"><input id="fn" placeholder="Nombre completo" value="${esc(e.nombre)}"><input id="fp" placeholder="Teléfono (opcional)" inputmode="tel" value="${esc(e.tel||'')}"><select id="fr">${['Policía','Suboficial','Oficial','Comandante'].map(r=>`<option ${r===e.rango?'selected':''}>${r}</option>`).join('')}</select><select id="ft">${T.map(t=>`<option ${t===e.turno?'selected':''}>${t}</option>`).join('')}</select></div>
+ <button class="btn main" data-act="saveO">${edO?'Guardar cambios':'Agregar'}</button> ${edO?'<button class="btn" data-act="cancel">Cancelar</button>':''}</div>
+ <div class="panel" style="margin-top:12px" ${ADM?'':'hidden'}><h2>Cargar lista completa</h2><p class="empty">Pega desde Excel una línea por policía: matrícula, nombre, teléfono, turno (teléfono y turno son opcionales).</p>
+ <textarea id="imp" placeholder="P-2001, Juan Pérez López, 5512345678, Nocturno"></textarea><button class="btn" data-act="imp" style="margin-top:8px">Importar lista</button></div>
+ <div class="panel" style="margin-top:12px"><h2>Personal (${S.off.length})</h2><input id="q" placeholder="Buscar por nombre o matrícula" value="${esc(q)}" style="width:100%;margin-bottom:8px">
+ <div class="scroll"><table><thead><tr><th>Matrícula</th><th>Nombre</th><th>Teléfono</th><th>Turno</th><th>Sector hoy</th><th></th></tr></thead><tbody id="tb">${rowsO()}</tbody></table></div></div>`}
+
+function sectores(){const e=S.sec.find(s=>s.id===edS)||{area:'',nombre:'',cupo:3};
+ return `<div class="panel" ${edS||ADM?'':'hidden'}><h2>${edS?'Editar sector':'Agregar sector'}</h2>
+ <div class="form"><input id="sa" placeholder="Área (ej. Centro)" value="${esc(e.area)}"><input id="sn" placeholder="Sector" value="${esc(e.nombre)}"><input id="sc" type="number" min="0" placeholder="Policías requeridos" value="${e.cupo}"></div>
+ <button class="btn main" data-act="saveS">${edS?'Guardar cambios':'Agregar'}</button> ${edS?'<button class="btn" data-act="cancel">Cancelar</button>':''}</div>
+ <div class="panel scroll" style="margin-top:12px"><h2>Sectores (${S.sec.length})</h2><table><thead><tr><th>Área</th><th>Sector</th><th>Requeridos</th><th></th></tr></thead><tbody>${S.sec.map(s=>`<tr><td>${esc(s.area)}</td><td>${esc(s.nombre)}</td><td>${s.cupo}</td><td><button class="btn sm" data-act="edS" data-id="${s.id}">Editar</button> <button class="btn sm bad" data-act="delS" data-id="${s.id}">Borrar</button></td></tr>`).join('')}</tbody></table>
+ ${ADM?'<p style="margin-top:12px"><button class="btn sm bad" data-act="reset">Restaurar datos de ejemplo</button></p>':''}</div>`}
+
+function csv(){const A=S.asg[turno]||{},r=[['Turno','Área','Sector','Matrícula','Nombre']];
+ S.off.filter(o=>o.turno===turno).forEach(o=>{const s=S.sec.find(x=>x.id===A[o.id]);r.push([turno,s?s.area:'',s?s.nombre:'SIN ASIGNAR',o.mat,o.nombre])});
+ r.sort((a,b)=>a===r[0]?-1:b===r[0]?1:(a[1]+a[2]).localeCompare(b[1]+b[2]));
+ return r.map(x=>x.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n')}
+
+function msg(){const A=S.asg[turno]||{};let t='ROL DE GUARDIA - Turno '+turno+' - '+new Date().toLocaleDateString('es-MX')+'\n';
+ S.sec.forEach(s=>{const l=S.off.filter(o=>o.turno===turno&&A[o.id]===s.id);if(l.length)t+='\n'+s.area+' / '+s.nombre+':\n'+l.map(o=>'- '+o.nombre).join('\n')+'\n'});
+ const u=S.off.filter(o=>o.turno===turno&&!falto(o)&&!S.sec.some(s=>s.id===A[o.id])),fa=S.off.filter(o=>o.turno===turno&&falto(o));if(u.length)t+='\nEn reserva: '+u.map(o=>o.nombre).join(', ');if(fa.length)t+='\nNo vinieron: '+fa.map(o=>o.nombre).join(', ');
+ return t}
+const hoy=()=>new Date().toLocaleDateString('en-CA');
+let RP=0,ASO=false;
+const falto=o=>((S.as||{})[hoy()+'|'+turno]||{})[o.id]===0;
+const vino=o=>((S.as||{})[hoy()+'|'+turno]||{})[o.id];
+function cubrir(){const A=S.asg[turno]||(S.asg[turno]={}),ids=new Set(S.sec.map(s=>s.id));
+ Object.keys(A).forEach(k=>{const o=S.off.find(x=>x.id==k);if(!o||o.turno!==turno||falto(o)||!ids.has(A[k]))delete A[k]});
+ const pres=S.off.filter(o=>o.turno===turno&&!falto(o)).sort((a,b)=>a.mat.localeCompare(b.mat)),n={};
+ S.sec.forEach(s=>n[s.id]=0);pres.forEach(o=>{if(A[o.id])n[A[o.id]]++});
+ const lib=pres.filter(o=>!A[o.id]);
+ S.sec.forEach(s=>{while(n[s.id]<s.cupo&&lib.length){A[lib.shift().id]=s.id;n[s.id]++}})}
+function exs(s,arr){const ao=(S.ao||{})[turno]||[];arr.sort((a,b)=>ao.indexOf(a.id)-ao.indexOf(b.id));return arr.slice(s.cupo)}
+function sugerir(id){const A=S.asg[turno]||{},n=s=>S.off.filter(o=>o.turno===turno&&A[o.id]===s.id).length,me=S.sec.find(s=>s.id===id),lib=S.sec.filter(s=>s.id!==id&&n(s)<s.cupo);return lib.find(s=>me&&s.area===me.area)||lib[0]||null}
+function ajustar(){const A=S.asg[turno]||{};if(!Object.keys(A).length)auto();else cubrir();toast('Rol ajustado según la asistencia')}
+document.addEventListener('toggle',e=>{if(e.target.id==='as')ASO=e.target.open},true);
+function cp(t){t.select();try{t.setSelectionRange(0,999999)}catch(e){}let ok=false;try{ok=document.execCommand('copy')}catch(e){}if(!ok&&navigator.clipboard)navigator.clipboard.writeText(t.value).catch(()=>{});return ok}
+function prevR(t){const d=Object.keys((S.hist||{})[t]||{}).filter(x=>x<hoy()).sort().pop();return d?S.hist[t][d]:null}
+function rep(){const P=prevR(turno);if(!P)return[];const A=S.asg[turno]||{};return S.off.filter(o=>o.turno===turno&&A[o.id]&&S.sec.some(s=>s.id===A[o.id])&&P[o.id]===A[o.id])}
+function diario(){if(!S.auto)return;S.day=S.day||{};const t0=turno;let ch=0;T.forEach(t=>{if(S.day[t]!==hoy()){turno=t;auto();ch=1}});turno=t0;if(ch){save();toast('Rol del día armado con rotación')}}
+function render(){if(!ADM)tab='tablero';diario();const n=tab==='tablero'?rep().length:0;if(n>RP)toast('⚠ '+n+(n>1?' policías repiten':' policía repite')+' el sector de su guardia anterior');RP=n;
+ $('nav').innerHTML=[['tablero','Tablero del turno'],['personal','Personal'],['sectores','Sectores']].filter(t=>ADM||t[0]==='tablero').map(t=>`<button class="${tab===t[0]?'on':''}" data-act="tab" data-v="${t[0]}">${t[1]}</button>`).join('');
+ const s1=$('asl'),st=s1?s1.scrollTop:0;$('app').innerHTML=tab==='tablero'?tablero():tab==='personal'?personal():sectores();const s2=$('asl');if(s2)s2.scrollTop=st;
+}
+function auto(){
+ const l=S.off.filter(o=>o.turno===turno&&!falto(o)).sort((a,b)=>a.mat.localeCompare(b.mat));
+ const A0=S.asg[turno]||{},ord=[];S.sec.forEach(s=>l.filter(o=>A0[o.id]===s.id).forEach(o=>ord.push(o)));const q=ord.concat(l.filter(o=>!ord.includes(o))),k=Math.max(1,...S.sec.map(s=>s.cupo))%(q.length||1),r=k?q.slice(q.length-k).concat(q.slice(0,q.length-k)):q,A={};let i=0;
+ S.sec.forEach(s=>{for(let n=0;n<s.cupo&&i<r.length;n++)A[r[i++].id]=s.id});
+ S.asg[turno]=A;S.day=S.day||{};S.day[turno]=hoy();sel.clear();S.ao=S.ao||{};S.ao[turno]=[];
+ toast(i+' policías asignados; '+(r.length-i)+' en reserva')}
+
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-act]');if(!b)return;
+ const a=b.dataset.act,id=+b.dataset.id,v=b.dataset.v;
+ if(a==='autoday'){S.auto=b.checked;if(S.auto){S.day=S.day||{};T.forEach(t=>S.day[t]=hoy())}save();render();toast(S.auto?'Rotación diaria activada':'Rotación diaria apagada');return}
+ if(a==='sel'){b.checked?sel.add(id):sel.delete(id);render();return}
+ if(a==='tab'){tab=v;edO=edS=null;}
+ else if(a==='turno'){turno=v;sel.clear()}
+ else if(a==='auto')auto();
+ else if(a==='clear'){S.asg[turno]={};toast('Turno limpio')}
+ else if(a==='ayer'){const d=new Date(Date.now()-864e5).toLocaleDateString('en-CA');S.hist=S.hist||{};S.hist[turno]=S.hist[turno]||{};S.hist[turno][d]=Object.assign({},S.asg[turno]||{});toast('Guardado como guardia de ayer')}
+ else if(a==='selall'){const A=S.asg[turno]||{};S.off.filter(o=>o.turno===turno&&!falto(o)&&!S.sec.some(s=>s.id===A[o.id])).forEach(o=>sel.add(o.id))}
+ else if(a==='selnone')sel.clear();
+ else if(a==='vino'||a==='falta'){const k=hoy()+'|'+turno;S.as=S.as||{};const m=S.as[k]=S.as[k]||{},v=a==='vino'?1:0;if(m[id]===v)delete m[id];else{m[id]=v;if(v===0&&S.asg[turno])delete S.asg[turno][id]}Object.keys(S.as).sort().slice(0,-8).forEach(x=>delete S.as[x]);ajustar()}
+ else if(a==='todosvino'){const k=hoy()+'|'+turno;S.as=S.as||{};const m=S.as[k]=S.as[k]||{};S.off.filter(o=>o.turno===turno).forEach(o=>m[o.id]=1);ajustar()}
+ else if(a==='limpAs'){const k=hoy()+'|'+turno;if(S.as)delete S.as[k];ajustar()}
+ else if(a==='put'){if(!sel.size){toast('Marca primero a los policías');return}const A=S.asg[turno]||(S.asg[turno]={}),sc=S.sec.find(x=>x.id===id),cur=S.off.filter(o=>o.turno===turno&&A[o.id]===id).length,add=sel.size,pick=[...sel];sel.forEach(o=>{A[o]=id;const mk=(S.as||{})[hoy()+'|'+turno];if(mk&&mk[o]===0)mk[o]=1});sel.clear();S.ao=S.ao||{};S.ao[turno]=(S.ao[turno]||[]).filter(x=>!pick.includes(x)).concat(pick);const tot=cur+add,li=sugerir(id);if(tot>sc.cupo)toast('⚠ '+sc.nombre+' pasa su límite ('+tot+'/'+sc.cupo+')'+(li?'. Hay lugar en '+li.nombre:''));else toast(add+' asignados a '+sc.nombre)}
+ else if(a==='out'){delete S.asg[turno][id]}
+ else if(a==='export'){const w=document.createElement('div');w.className='panel';w.innerHTML='<h2>Rol del turno '+turno+'</h2><textarea id="ex" style="min-height:220px" readonly></textarea><p><button class="btn" data-act="print">Imprimir</button> <button class="btn" data-act="closeEx">Cerrar</button></p>';$('app').prepend(w);$('ex').value=csv();$('ex').select();return}
+ else if(a==='print'){window.print();return}
+ else if(a==='send'){const A=S.asg[turno]||{},d=new Date().toLocaleDateString('es-MX'),w=document.createElement('div');w.className='panel';
+  const ind=S.off.filter(o=>o.turno===turno&&o.tel&&S.sec.some(s=>s.id===A[o.id])).map(o=>{const s=S.sec.find(x=>x.id===A[o.id]),b=encodeURIComponent('Turno '+turno+' '+d+'. Tu puesto: '+s.area+' / '+s.nombre);return `<div class="row"><span><b>${esc(o.nombre)}</b> <small>${esc(o.tel)} · ${esc(s.nombre)}</small></span><a class="btn sm" style="margin-left:auto" href="sms:${encodeURIComponent(o.tel.replace(/\s/g,''))}?&body=${b}" target="_blank">Avisar</a></div>`}).join('');
+  w.innerHTML=`<h2>Enviar rol del turno ${turno}</h2><textarea id="mt" style="min-height:220px"></textarea><p class="bar"><button class="btn main" data-act="wa">WhatsApp</button><button class="btn" data-act="sms">SMS</button><button class="btn" data-act="copy">Copiar mensaje</button><button class="btn" data-act="closeEx">Cerrar</button></p><h2>Avisar a cada policía su puesto</h2><div class="list">${ind||'<p class="empty">Nadie con sector y teléfono.</p>'}</div>`;
+  $('app').prepend(w);$('mt').value=msg();w.scrollIntoView();return}
+ else if(a==='wa'){const t=$('mt');cp(t);toast('Mensaje copiado. Si no abre WhatsApp, pégalo en tu grupo');const mb=/Android|iPhone|iPad/i.test(navigator.userAgent),u=encodeURIComponent(t.value);if(mb)window.location.href='whatsapp://send?text='+u;else window.open('https://wa.me/?text='+u,'_blank');return}
+ else if(a==='sms'){window.open('sms:?&body='+encodeURIComponent($('mt').value),'_blank');return}
+ else if(a==='copy'){cp($('mt'));toast('Mensaje copiado');return}
+ else if(a==='closeEx'){render();return}
+ else if(a==='edO'){edO=id}
+ else if(a==='edS'){edS=id}
+ else if(a==='cancel'){edO=edS=null}
+ else if(a==='delO'){S.off=S.off.filter(o=>o.id!==id);T.forEach(t=>delete S.asg[t][id]);toast('Policía borrado')}
+ else if(a==='delS'){S.sec=S.sec.filter(s=>s.id!==id);toast('Sector borrado')}
+ else if(a==='saveO'){const mat=$('fm').value.trim(),nom=$('fn').value.trim();
+  if(!mat||!nom){toast('Falta matrícula o nombre');return}
+  if(S.off.some(o=>o.mat===mat&&o.id!==edO)){toast('Esa matrícula ya existe');return}
+  const d={mat,nombre:nom,tel:$('fp').value.trim(),rango:$('fr').value,turno:$('ft').value};
+  if(edO){Object.assign(S.off.find(o=>o.id===edO),d);T.forEach(t=>{if(t!==d.turno)delete S.asg[t][edO]})}else S.off.push({id:S.nid++,...d});
+  toast(edO?'Cambios guardados':'Policía agregado');edO=null}
+ else if(a==='saveS'){const n=$('sn').value.trim();if(!n){toast('Falta el nombre del sector');return}
+  const d={area:$('sa').value.trim(),nombre:n,cupo:Math.max(0,parseInt($('sc').value)||0)};
+  if(edS)Object.assign(S.sec.find(s=>s.id===edS),d);else S.sec.push({id:S.nid++,...d});
+  toast('Sector guardado');edS=null}
+ else if(a==='imp'){let n=0,sk=0;$('imp').value.split('\n').forEach(l=>{const p=l.split(/[,;\t]/).map(x=>x.trim());
+   if(p.length<2||!p[0]||!p[1]||S.off.some(o=>o.mat===p[0])){if(l.trim())sk++;return}
+   S.off.push({id:S.nid++,mat:p[0],nombre:p[1],rango:'Policía',tel:p[2]||'',turno:T.includes(p[3])?p[3]:T[S.off.length%T.length]});n++});
+  toast(n+' importados'+(sk?', '+sk+' omitidos':''))}
+ else if(a==='reset'){S=demo();sel.clear();toast('Datos de ejemplo restaurados')}
+ save();render();
+});
+document.addEventListener('input',e=>{if(e.target.id==='q'){q=e.target.value;$('tb').innerHTML=rowsO()}});
+document.addEventListener('change',e=>{const t=e.target,f=t.dataset.f;if(t.dataset.mv){const A=S.asg[turno]||(S.asg[turno]={}),to=+t.value,oid=+t.dataset.mv;if(to){A[oid]=to;S.ao=S.ao||{};S.ao[turno]=(S.ao[turno]||[]).filter(x=>x!==oid).concat([oid]);save();render();toast('Movido a '+secName(to))}return}if(!f)return;const o=S.off.find(x=>x.id===+t.dataset.id);if(!o)return;const v=t.value.trim();
+ if((f==='mat'||f==='nombre')&&!v){t.value=o[f];toast('No puede quedar vacío');return}
+ if(f==='mat'&&S.off.some(x=>x.mat===v&&x.id!==o.id)){t.value=o.mat;toast('Esa matrícula ya existe');return}
+ if(f==='turno'&&S.asg[o.turno])delete S.asg[o.turno][o.id];
+ o[f]=v;save();toast('Guardado');if(f==='turno')$('tb').innerHTML=rowsO()});
+render();
+</script></body></html>
